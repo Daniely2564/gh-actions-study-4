@@ -19,6 +19,17 @@ jobs:
         run: |
           echo "A job failed here this such detail ${{ github }}"
 ```
+However, the previous job would end up failing since all of the jobs run in parallel. You would always want to make sure to run them sequentially using `needs` keyword.
+
+```yml
+  on-failure:
+    if: failure()
+    needs: # some build that this on-failure job waits for in case of failure.
+    runs-on: ubuntu-latest
+    steps:
+      - name: ...
+      # ...
+```
 
 ## Steps
 - Ignore errors via `continue-on-error` field
