@@ -79,8 +79,8 @@ jobs:
         run: echo "Deploying..."
   on-failure:
     runs-on: ubuntu-latest
+    if: failure()
     steps:
-      if: failure()
       - name: Output information
         run: |
           echo "Something went wrong"
