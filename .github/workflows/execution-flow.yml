@@ -79,7 +79,7 @@ jobs:
         run: echo "Deploying..."
   on-failure:
     runs-on: ubuntu-latest
-    needs: test
+    needs: [deploy, lint]
     if: failure()
     steps:
       - name: Output information

@@ -31,6 +31,27 @@ However, the previous job would end up failing since all of the jobs run in para
       # ...
 ```
 
+The `needs` do not always have to run after an immediate job failure (e.g. previous job). This can be used at the end and watch for any failures coming from any previous jobs.
+
+Example
+
+If the pipeline follows as
+
+```
+        - Lint  -  -  -  - 
+      /                     \
+Start                          On Failure
+      \                     /
+        - Build - Deploy  - 
+```
+
+```yml
+  needs : [Deploy, Lint]
+```
+
+In this case, even if the job, `Build` fails, the `On Failure` will be triggered.
+
+
 ## Steps
 - Ignore errors via `continue-on-error` field
 - Step result documentation: https://docs.github.com/en/actions/learn-github-actions/contexts#steps-context
