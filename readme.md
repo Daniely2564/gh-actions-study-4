@@ -26,10 +26,29 @@ Run a test only if a previous step fails. You would always need an id for a step
       with:
         name: test-report
         path: test.json
+```
 
+Once you run this, you will find that this did not run. Reason -> our condition does check the result, but the default behavior is not to run the steps if any previous step fails. In order to handle this, we need to insert a new method. We can update the if condition as follows
+
+```yml
+    - name: Runs if fails
+      if: failure() && steps.test-components.outcome == 'failure'
 ```
 
 For if syntax, it always depends on the environment, so you can omit the syntax `${{ x }}` even though you can still use this.
 
 You can additionally execute your own conditions with the help of Expressions.
+
+## Special Conditional Functions
+
+Function that gets evaluated when one of the below conditions meet.
+
+- failure()
+  - Returns `true` when any previous **Step** or **Job** fails
+- success()
+  - Returns `true` when a step or job succeeds
+- always()
+  - Always runs whether success/failure. Or even if it's cancelled.
+- cancelled()
+  - Returns true if workflow has been cancelled.
 
