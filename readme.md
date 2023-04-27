@@ -6,6 +6,20 @@ Both **Jobs** and **Steps** can be executed via `if` field.
 
 ## Jobs
 
+### Jobs Example 1
+We can set up a job to run on failure.
+```yml
+jobs:
+  # ...
+  on-failure:
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: This would run on failure
+        run: |
+          echo "A job failed here this such detail ${{ github }}"
+```
+
 ## Steps
 - Ignore errors via `continue-on-error` field
 - Step result documentation: https://docs.github.com/en/actions/learn-github-actions/contexts#steps-context
