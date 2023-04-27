@@ -34,6 +34,10 @@ jobs:
         run: npm ci
       - name: Test code
         run: npm run test
+        id: test-components # adding unique id to reference this step.
+      - name: Run if fails
+        if: steps.test-components.outcome == 'failure'
+        run: echo "Hey, I failed here :("
       - name: Upload test report
         uses: actions/upload-artifact@v3
         with:
