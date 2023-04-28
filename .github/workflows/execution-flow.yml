@@ -34,8 +34,6 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Install dependencies
-        run: npm ci
       - name: Test code
         run: npm run test
         id: test-components # adding unique id to reference this step.
