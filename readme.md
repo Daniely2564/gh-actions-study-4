@@ -85,6 +85,22 @@ For if syntax, it always depends on the environment, so you can omit the syntax 
 
 You can additionally execute your own conditions with the help of Expressions.
 
+### Steps Example 2 - Caching dependencies in case of failure
+
+In case, you want to still download the dependencies and cache them in case of failure, you can activate step using actions/cache
+
+```yml
+  steps:
+    - name: Will file for sure (Caches dependencies)
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+    - name: Install if not cached
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci
+```
+
 ## Special Conditional Functions
 
 Function that gets evaluated when one of the below conditions meet.
