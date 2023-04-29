@@ -101,6 +101,10 @@ In case, you want to still download the dependencies and cache them in case of f
       run: npm ci
 ```
 
+## Continue On Error
+
+In case, you want to run the job on failure, you can use `continue-on-error`. This will complete the job even if a step fails. 
+
 ## Special Conditional Functions
 
 Function that gets evaluated when one of the below conditions meet.
