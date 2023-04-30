@@ -103,7 +103,19 @@ In case, you want to still download the dependencies and cache them in case of f
 
 ## Continue On Error
 
-In case, you want to run the job on failure, you can use `continue-on-error`. This will complete the job even if a step fails. 
+In case, you want to run the job on failure, you can use `continue-on-error`. This will complete the job even if a step fails. This will ensure that your step or job continues even on a failure.
+
+```yml
+      - name: Test code
+        run: npm run test
+        id: test-components # adding unique id to reference this step.
+      - name: Upload test report even it fails
+        continue-on-error: true # You can use ${{}} to drive value directly as needed
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: test.json
+```
 
 ## Special Conditional Functions
 
