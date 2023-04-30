@@ -16,10 +16,10 @@ jobs:
           path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Log Dep node_modules
-        run: echo "ls"
+        run: ls
       - name: Check if the cache hit occured
         run: |
-          echo "Cache hit : ${{ steps.cache.outputs.cache-hit }}""
+          echo "Cache hit : ${{ steps.cache.outputs.cache-hit }}"
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
