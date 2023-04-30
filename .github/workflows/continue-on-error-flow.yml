@@ -15,6 +15,9 @@ jobs:
         with:
           path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Check if the cahche hit occured
+        run: |
+          echo "Cache hit : ${{ steps.cache.outputs.cache-hit }}""
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
