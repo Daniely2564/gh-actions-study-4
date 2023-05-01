@@ -14,7 +14,7 @@ on:
 jobs:
   reusable-deploy:
     outputs:
-      outcome: ${{ steps.set-result.outputs.step-result }}
+      outcome: ${{ steps.set-result.outputs.my-deploy-result }}
     runs-on: ubuntu-latest
     steps:
       - name: Print Input Passed in
