@@ -246,3 +246,6 @@ jobs:
       - name: Build Project
         run: npm run build
 ```
+
+Resulting the following :
+![](imgs/res/2023-05-01-01-19-08.png)
