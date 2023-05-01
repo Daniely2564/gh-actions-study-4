@@ -292,5 +292,6 @@ jobs:
 
 Once created, for the value of `on`, we would like to make sure the workflow runs based on the trigger from another workflow. So we pass in `workflow_call` for the value, `on`.
 
-```
+```yml
+on: workflow_call
 ```
