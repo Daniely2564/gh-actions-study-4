@@ -12,7 +12,7 @@ on:
         description: The result of the deployment operation
         value: ${{ jobs.deploy.outputs.outcome }}
 jobs:
-  deploy:
+  reusable-deploy:
     outputs:
       outcome: ${{ steps.set-result.outputs.step-result }}
     runs-on: ubuntu-latest
