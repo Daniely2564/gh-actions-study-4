@@ -249,3 +249,26 @@ jobs:
 
 Resulting the following :
 ![](imgs/res/2023-05-01-01-19-08.png)
+
+### Including
+
+`include` in matrix allows you to add the list as a key - value as a new configuration combination. This is different from how we declare above, (node-version, operating-system) because list declared as a matrix key value pair will generate jobs list all combined total in this case 3 x 2 = 6 jobs. But include will only create a new combination of node-version 18 with ubuntu-latest
+
+```yml
+strategy:
+  matrix:
+    node-version: [12, 14, 16]
+    operating-system: [ubuntu-latest, windows-latest]
+    include:
+      - node-version: 18
+        operating-system: ubuntu-latest
+```
+
+### Excluding
+`exclude` in matrix allows you to skip specific combination.
+
+```yml
+exclude:
+  - node-version: 12
+    operating-system: windows-latest
+```
