@@ -7,8 +7,14 @@ on:
         required: true # optionally can be false
         default: Default Value
         type: string # boolean, ... others
+    outputs:
+      my-deploy-result:
+        description: The result of the deployment operation
+        value: ${{ jobs.deploy.outputs.outcome }}
 jobs:
   deploy:
+    outputs:
+      outcome: ${{ steps.set-result.outputs.step-result }}
     runs-on: ubuntu-latest
     steps:
       - name: Print Input Passed in
@@ -16,3 +22,5 @@ jobs:
           echo "${{ inputs.some-input }}"
       - name: Output information
         run: echo "Deploying & uploading"
+      - name: Set result output
+        run: echo "step-result=my-deploy-result" >> $GITHUB_OUTPUT

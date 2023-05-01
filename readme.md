@@ -315,3 +315,32 @@ workflow_call:
 
 This will allow to pass in inputs to the workflow. Each `input` requries you to pass in `description`, `required`, `type`. You can optionall pass in `default` when required is `false` and other attributes as needed. The documentation can be found `https://docs.github.com/en/actions/learn-github-actions/contexts#inputs-context`.
 
+### Secrets
+
+In case we need to pass in secret values, we can
+
+`reusable-workflow.yml`
+```yml
+  inputs:
+    ...
+  secrets:
+    some-secret-value:
+      required: true # false
+```
+
+To pass in secret values, we can pass in secret values as shown below: 
+
+
+```yml
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-workflow.yml 
+    with:
+      some-input: Hello World!
+    secrets:
+      some-secret: ${{ secrets.some-secret }}
+```
+
+### Outputs
+
+Think of the workflow as an input and output value as a function with parameters and return value. 
