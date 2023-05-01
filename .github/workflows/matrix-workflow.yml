@@ -9,7 +9,7 @@ jobs:
       matrix:
         node-version: [12, 14, 16]
         operating-system: [ubuntu-latest, windows-latest]
-    run-on: ${{ matrix.operating-system }}
+    run-ons: ${{ matrix.operating-system }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
