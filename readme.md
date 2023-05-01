@@ -295,3 +295,23 @@ Once created, for the value of `on`, we would like to make sure the workflow run
 ```yml
 on: workflow_call
 ```
+
+Once we run this job, we can see the `using-reusable-workflow` can import and use the `reusuable-workflow`.
+
+### Passing in values to reusuable workflow
+
+In order to pass in values to the workflow, we need to add `inputs` field to the resuable workflow. Intead of making `on` value `worfklow_call` as a single word, we will update as the following:
+
+```yml
+on:
+workflow_call:
+  inputs:
+    some-input:
+      description: Required input to run this workflow
+      required: true # optionally can be false
+      default: Default Value
+      type: string # boolean, ... others
+```
+
+This will allow to pass in inputs to the workflow. Each `input` requries you to pass in `description`, `required`, `type`. You can optionall pass in `default` when required is `false` and other attributes as needed. The documentation can be found `https://docs.github.com/en/actions/learn-github-actions/contexts#inputs-context`.
+

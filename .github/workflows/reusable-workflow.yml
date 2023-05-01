@@ -1,8 +1,18 @@
 name: Reusable Workflow
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      some-input:
+        description: Required input to run this workflow
+        required: true # optionally can be false
+        default: Default Value
+        type: string # boolean, ... others
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Print Input Passed in
+        run: |
+          echo "${{ inputs.some-input }}"
       - name: Output information
         run: echo "Deploying & uploading"
