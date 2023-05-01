@@ -123,6 +123,13 @@ In case, you want to run the job on failure, you can use `continue-on-error`. Th
     path: test.json
 ```
 
+### Context Tips
+
+| Property Name                | Type     | Description                                                                                                                                                                                                                                         |
+| ---------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `steps.<step_id>.conclusion` | `string` | The result of a completed step after `continue-on-error` is applied. Possible values are `success`, `failure`, `cancelled`, or `skipped`. When a `continue-on-error` step fails, the `outcome` is `failure`, but the final conclusion is `success`. |
+| `steps.<step_id>.outcome`    | `string` |                                                                                                                                                                                                                                                     | The result of a completed step before `continue-on-error` is applied. Possible values are success, failure, cancelled, or skipped. When a `continue-on-error` step fails, the `outcome` is `failure`, but the final conclusion is `success`. |
+
 ## Special Conditional Functions
 
 Function that gets evaluated when one of the below conditions meet.
@@ -135,3 +142,75 @@ Function that gets evaluated when one of the below conditions meet.
   - Always runs whether success/failure. Or even if it's cancelled.
 - cancelled()
   - Returns true if workflow has been cancelled.
+
+## Matrix
+
+In case you want to run the same job with a slight different configuration simultaneously, you can use matrix.
+
+### Matrix Example
+
+```yml
+name: Matrix Workflow
+on: push
+jobs:
+  build:
+    run-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build Project
+        run: npm run build
+```
+
+If you would like to run the same job with node-version 15, you can use keyword, `strategy` -> `matrix` to copy and tweak value.
+
+```yml
+name: Matrix Workflow
+on: push
+jobs:
+  build:
+    strategy:
+      matrix:
+        node-version: [12, 14, 16]
+        operating-system: [ubuntu-latest, windows-latest]
+    run-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build Project
+        run: npm run build
+```
+
+First, we would create a field `strategy` and create `matrix` values under `strategy`.
+
+```yml
+strategy:
+  matrix:
+    node-version: [12, 14, 16]
+    operating-system: [ubuntu-latest, windows-latest]
+```
+
+And now we can use them anywhere using `matrix` context.
+
+```yml
+run-on: ${{ matrix.operating-system }}
+```
+
+```yml
+with:
+  node-version: ${{ matrix.node-version }}
+```
+
+This will clone a job of itself with provided configuration to run in parallel.
