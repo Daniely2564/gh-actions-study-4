@@ -344,3 +344,90 @@ jobs:
 ### Outputs
 
 Think of the workflow as an input and output value as a function with parameters and return value. 
+
+In order to create and pass out an output, you need to set up few things.
+
+First, in our reusuable-workflow, in the `job`, we create `outputs` that will pick up the `output` from the steps.
+
+```yml
+jobs:
+  reusable-deploy:
+    outputs:
+      outcome: ${{ steps.set-result.outputs.my-deploy-result }}
+```
+
+Since we declared that we will go to `steps` -> id `set-result` -> `outputs` -> grab `my-deploy-result`, we need to set it in the steps.
+
+```yml
+- name: Set result output
+  id: set-result
+  run: echo "my-deploy-result=something-funny" >> $GITHUB_OUTPUT
+```
+
+Now in the `workflow_call`, we will set `outputs` and declare value there.
+
+```yml
+workflow_call:
+  inputs:
+    some-input:
+      description: Required input to run this workflow
+      required: true # optionally can be false
+      default: Default Value
+      type: string # boolean, ... others
+  outputs:
+    my-deploy-result:
+      description: The result of the deployment operation
+      value: ${{ jobs.reusable-deploy.outputs.outcome }}
+```
+
+Now value will be set as `jobs` -> job name `reusable-deploy` -> `outputs` -> output we set in the job, `outcome`.
+
+Once ready, overall `reusable-workflow` must look like the following
+
+```yml
+name: Reusable Workflow
+on:
+  workflow_call:
+    inputs:
+      some-input:
+        description: Required input to run this workflow
+        required: true # optionally can be false
+        default: Default Value
+        type: string # boolean, ... others
+    outputs:
+      my-deploy-result:
+        description: The result of the deployment operation
+        value: ${{ jobs.reusable-deploy.outputs.outcome }}
+jobs:
+  reusable-deploy:
+    outputs:
+      outcome: ${{ steps.set-result.outputs.my-deploy-result }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Input Passed in
+        run: |
+          echo "${{ inputs.some-input }}"
+      - name: Output information
+        run: echo "Deploying & uploading"
+      - name: Set result output
+        id: set-result
+        run: echo "my-deploy-result=something-funny" >> $GITHUB_OUTPUT
+```
+
+In order to use the value in our main job, `use-reusable-workflow` 
+
+```yml
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-workflow.yml # provide full path to the workflow relative to the repository root dir.
+    with:
+      some-input: Hello World!
+  print-deploy-result:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Print Deploy Output
+        run: echo "${{ needs.deploy.outputs.my-deploy-result }}"
+```
+
+As we can see, we must add `needs` so that our `print-deploy-result` runs after the value is set. Also, we access the output using `needs` and accesss output from there.
