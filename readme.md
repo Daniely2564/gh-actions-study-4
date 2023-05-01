@@ -126,9 +126,9 @@ In case, you want to run the job on failure, you can use `continue-on-error`. Th
 ### Context Tips
 
 | Property Name                | Type     | Description                                                                                                                                                                                                                                         |
-| ---------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ---------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `steps.<step_id>.conclusion` | `string` | The result of a completed step after `continue-on-error` is applied. Possible values are `success`, `failure`, `cancelled`, or `skipped`. When a `continue-on-error` step fails, the `outcome` is `failure`, but the final conclusion is `success`. |
-| `steps.<step_id>.outcome`    | `string` |                                                                                                                                                                                                                                                     | The result of a completed step before `continue-on-error` is applied. Possible values are success, failure, cancelled, or skipped. When a `continue-on-error` step fails, the `outcome` is `failure`, but the final conclusion is `success`. |
+| `steps.<step_id>.outcome`    | `string` | The result of a completed step before `continue-on-error` is applied. Possible values are success, failure, cancelled, or skipped. When a `continue-on-error` step fails, the `outcome` is `failure`, but the final conclusion is `success`.        |
 
 ## Special Conditional Functions
 
@@ -265,6 +265,7 @@ strategy:
 ```
 
 ### Excluding
+
 `exclude` in matrix allows you to skip specific combination.
 
 ```yml
@@ -275,7 +276,7 @@ exclude:
 
 ## Reusable workflow
 
-You can have workflow that you wanted to use in the other workflow. Like steps, jobs. E.g. one workflow might focus on just deploying while a similar workflow does the same and additionally test and building and others. 
+You can have workflow that you wanted to use in the other workflow. Like steps, jobs. E.g. one workflow might focus on just deploying while a similar workflow does the same and additionally test and building and others.
 
 First, we would have to create a workflow that can be used in another workflow.
 
@@ -320,21 +321,20 @@ This will allow to pass in inputs to the workflow. Each `input` requries you to 
 In case we need to pass in secret values, we can
 
 `reusable-workflow.yml`
+
 ```yml
-  inputs:
-    ...
-  secrets:
-    some-secret-value:
-      required: true # false
+inputs: ...
+secrets:
+  some-secret-value:
+    required: true # false
 ```
 
-To pass in secret values, we can pass in secret values as shown below: 
-
+To pass in secret values, we can pass in secret values as shown below:
 
 ```yml
 jobs:
   deploy:
-    uses: ./.github/workflows/reusable-workflow.yml 
+    uses: ./.github/workflows/reusable-workflow.yml
     with:
       some-input: Hello World!
     secrets:
@@ -343,7 +343,7 @@ jobs:
 
 ### Outputs
 
-Think of the workflow as an input and output value as a function with parameters and return value. 
+Think of the workflow as an input and output value as a function with parameters and return value.
 
 In order to create and pass out an output, you need to set up few things.
 
@@ -414,7 +414,7 @@ jobs:
         run: echo "my-deploy-result=something-funny" >> $GITHUB_OUTPUT
 ```
 
-In order to use the value in our main job, `use-reusable-workflow` 
+In order to use the value in our main job, `use-reusable-workflow`
 
 ```yml
 jobs:
