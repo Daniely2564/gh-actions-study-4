@@ -10,7 +10,7 @@ on:
     outputs:
       my-deploy-result:
         description: The result of the deployment operation
-        value: ${{ jobs.deploy.outputs.outcome }}
+        value: ${{ jobs.reusable-deploy.outputs.outcome }}
 jobs:
   reusable-deploy:
     outputs:
