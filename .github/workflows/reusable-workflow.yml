@@ -23,4 +23,5 @@ jobs:
       - name: Output information
         run: echo "Deploying & uploading"
       - name: Set result output
+        id: set-result
         run: echo "my-deploy-result=something-funny" >> $GITHUB_OUTPUT
