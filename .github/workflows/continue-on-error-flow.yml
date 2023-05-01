@@ -24,10 +24,10 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Test code
+        continue-on-error: true # You can use ${{}} to drive value directly as needed
         run: npm run test
         id: test-components # adding unique id to reference this step.
       - name: Upload test report even it fails
-        continue-on-error: true # You can use ${{}} to drive value directly as needed
         uses: actions/upload-artifact@v3
         with:
           name: test-report
