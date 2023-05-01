@@ -214,3 +214,35 @@ with:
 ```
 
 This will clone a job of itself with provided configuration to run in parallel.
+
+This will result the following:
+![](imgs/res/2023-05-01-01-14-22.png)
+
+The workflow will stop as soon as one job fails. To prevent rest not running, we can again use the `continue-on-error` at the job level. The overall code should look like,
+
+```yml
+name: Matrix Workflow
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    continue-on-error: true
+    strategy:
+      matrix:
+        node-version: [12, 14, 16]
+        operating-system: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build Project
+        run: npm run build
+```
