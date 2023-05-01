@@ -1,0 +1,8 @@
+name: Using Reusable Workflow
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-workflow.yml # provide full path to the workflow relative to the repository root dir.

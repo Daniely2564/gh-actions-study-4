@@ -272,3 +272,25 @@ exclude:
   - node-version: 12
     operating-system: windows-latest
 ```
+
+## Reusable workflow
+
+You can have workflow that you wanted to use in the other workflow. Like steps, jobs. E.g. one workflow might focus on just deploying while a similar workflow does the same and additionally test and building and others. 
+
+First, we would have to create a workflow that can be used in another workflow.
+
+```yml
+name: Reusable Workflow
+on: ...
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: echo "Deploying & uploading"
+```
+
+Once created, for the value of `on`, we would like to make sure the workflow runs based on the trigger from another workflow. So we pass in `workflow_call` for the value, `on`.
+
+```
+```
