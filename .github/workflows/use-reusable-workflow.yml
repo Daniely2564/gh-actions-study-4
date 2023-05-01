@@ -10,7 +10,7 @@ jobs:
       some-input: Hello World!
   print-deploy-result:
     runs-on: ubuntu-latest
-    needs: reusable-deploy
+    needs: deploy
     steps:
       - name: Print Deploy Output
         run: echo "${{ needs.deploy.outputs.my-deploy-result }}"
